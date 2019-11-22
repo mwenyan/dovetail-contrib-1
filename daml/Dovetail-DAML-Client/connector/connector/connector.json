@@ -1,0 +1,72 @@
+{
+    "name": "DAMLLedgerConnector",
+    "version": "1.0.0",
+    "title": "DAML Ledger connector",
+    "type": "flogo:connector",
+    "author": "TIBCO Software Inc.",
+    "display": {
+        "description": "connection info for DAML ledger server",
+        "category": "Dovetail-DAML-Client",
+        "visible": true,
+        "smallIcon": "params.png",
+        "largeIcon": "params.png"
+    },
+    "ref": "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/connector/connector",
+    "keyfield": "display",
+    "settings": [
+        {
+            "name": "display",
+            "type": "string",
+            "required": true,
+            "display": {
+                "name": "Connector Name",
+                "visible": true
+            }
+        },
+        {
+            "name": "connectorType",
+            "type": "string",
+            "required": true,
+            "display": {
+                "name": "Select Connector Type",
+                "visible": true ,
+                "type": "dropdown", 
+                "selection": "single"
+            }
+        },
+        {
+            "name": "host",
+            "type": "string",
+            "display": {
+                "visible":false
+            }
+        },
+        {
+            "name": "port",
+            "type": "string",
+            "display": {
+                "visible":false
+            }
+        },
+        {
+            "name": "JWT",
+            "type": "string",
+            "display": {
+                "visible":false
+            }
+        },
+        {
+            "name": "enable SSL",
+            "type": "boolean",
+            "display": {
+                "visible":false
+            }
+        }
+    ],
+    "actions": [ 
+        
+        {
+            "name": "Done"
+        }
+    ]
+}

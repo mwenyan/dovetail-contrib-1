@@ -1,0 +1,72 @@
+{
+    "name": "DAMLTemplateSchemaConnector",
+    "version": "1.0.0",
+    "title": "Import DAML Contract",
+    "type": "flogo:connector",
+    "author": "TIBCO Software Inc.",
+    "display": {
+        "description": "Import DAML Contract",
+        "category": "Dovetail-DAML-Client",
+        "visible": true,
+        "smallIcon": "params.png",
+        "largeIcon": "params.png"
+    },
+    "ref": "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/connector/contract",
+    "keyfield": "display",
+    "settings": [
+        {
+            "name": "display",
+            "type": "string",
+            "required": true,
+            "display": {
+                "name": "Contract Name",
+                "visible": true
+            }
+        },
+        {
+            "name": "contractFile",
+            "type": "string",
+            "required": false,
+            "display": {
+                "name": "Select DAML Contract JSON File",
+                "visible": true ,
+                "type": "fileselector", 
+                "fileExtensions": [".json"]
+            }
+        },
+        {
+            "name": "packageId",
+            "type": "string",
+            "display": {
+                "visible":false
+            }
+        },
+        {
+            "name": "templates",
+            "type": "array",
+            "display": {
+                "visible":false
+            }
+        },
+        {
+            "name": "choices",
+            "type": "object",
+            "display": {
+                "visible":false
+            }
+        },
+        {
+            "name": "schemas",
+            "type": "object",
+            "display": {
+                "visible":false
+            }
+        }
+    ],
+    "actions": [ 
+        
+        {
+            "name": "Done"
+        }
+    ]
+}

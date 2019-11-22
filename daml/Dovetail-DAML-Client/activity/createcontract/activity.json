@@ -1,0 +1,71 @@
+{
+    "name": "createcontract",
+    "title": "Create Contract",
+    "version": "1.0.0",
+    "type": "flogo:activity",
+    "author": "TIBCO Software Inc.",
+    "display": {
+       "category": "Dovetail-DAML-Client",
+       "visible": true,
+       "smallIcon": "builder.png",
+       "description": "create a contract"
+    },
+    "feature": {
+        "iterator": {
+                "type": "iterator",
+                "enabled": false
+        }
+    },
+    "ref": "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/activity/createcontract",
+    "inputs": [
+            {
+                "name": "contract",
+                "type": "string",
+                "required": true,
+                "display": {
+                    "name": "Specify DAML Package",
+                    "type": "dropdown",
+                    "selection":"single"
+                },
+                "allowed":[]
+            },
+            {
+                "name": "template",
+                "type": "string",
+                "required": true,
+                "display": {
+                    "name": "Specify the contract tempate",
+                    "type": "dropdown",
+                    "selection":"single"
+                },
+                "allowed":[]
+            },
+            {
+                "name": "connector",
+                "type": "string",
+                "required": true,
+                "display": {
+                    "name": "Specify ledger connection",
+                    "type": "dropdown",
+                    "selection":"single"
+                },
+                "allowed":[]
+            },
+           {
+                "name": "input",
+                "type": "complex_object",
+                "required": false
+           },
+           {
+                "name": "packageId",
+                "type": "string",
+                "required": true,
+                "display": {
+                    "visible":false
+                }
+            }
+    ],
+  
+    "outputs": [
+    ]
+}

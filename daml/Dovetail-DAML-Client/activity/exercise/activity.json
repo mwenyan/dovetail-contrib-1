@@ -1,0 +1,63 @@
+{
+    "name": "exercise",
+    "title": "Excercise Contract Choice",
+    "version": "1.0.0",
+    "type": "flogo:activity",
+    "author": "TIBCO Software Inc.",
+    "display": {
+       "category": "Dovetail-DAML-Client",
+       "visible": true,
+       "smallIcon": "invoke.png",
+       "description": "exercise a contract choice"
+    },
+    "feature": {
+        "iterator": {
+                "type": "iterator",
+                "enabled": false
+        }
+    },
+    "ref": "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/activity/exercise",
+    "inputs": [
+            {
+                "name": "contract",
+                "type": "string",
+                "required": true,
+                "display": {
+                    "name": "Specify DAML Package",
+                    "type": "dropdown",
+                    "selection":"single"
+                },
+                "allowed":[]
+            },
+            {
+                "name": "template",
+                "type": "string",
+                "required": true,
+                "display": {
+                    "name": "Specify the contract tempate",
+                    "type": "dropdown",
+                    "selection":"single"
+                },
+                "allowed":[]
+            },
+            {
+                "name": "choice",
+                "type": "string",
+                "required": true,
+                "display": {
+                    "name": "Specify the contract choice",
+                    "type": "dropdown",
+                    "selection":"single"
+                },
+                "allowed":[]
+            },
+           {
+                "name": "input",
+                "type": "complex_object",
+                "required": false
+           }
+    ],
+  
+    "outputs": [
+    ]
+}
