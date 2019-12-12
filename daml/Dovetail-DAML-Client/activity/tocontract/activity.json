@@ -1,14 +1,14 @@
 {
-    "name": "exercise",
-    "title": "Excercise Contract Choice",
+    "name": "coerceToContract",
+    "title": "Coerce to Contract",
     "version": "1.0.0",
     "type": "flogo:activity",
     "author": "TIBCO Software Inc.",
     "display": {
        "category": "Dovetail-DAML-Client",
        "visible": true,
-       "smallIcon": "invoke.png",
-       "description": "exercise a contract choice"
+       "smallIcon": "mapper.png",
+       "description": "Coerce an object to a contract"
     },
     "feature": {
         "iterator": {
@@ -16,7 +16,7 @@
                 "enabled": false
         }
     },
-    "ref": "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/activity/exercise",
+    "ref": "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/activity/tocontract",
     "inputs": [
             {
                 "name": "contract",
@@ -40,32 +40,6 @@
                 },
                 "allowed":[]
             },
-            {
-                "name": "choice",
-                "type": "string",
-                "required": true,
-                "display": {
-                    "name": "Specify the contract choice",
-                    "type": "dropdown",
-                    "selection":"single"
-                },
-                "allowed":[]
-            },
-            {
-                "name": "connector",
-                "type": "connection",
-                "required": true,
-                "display": {
-                    "name": "Connection to ledger service",
-                    "type": "connection"
-                },
-                "allowed":[]
-            },
-            {
-                "name": "contractId",
-                "type": "string",
-                "required": true
-           }, 
            {
                 "name": "input",
                 "type": "complex_object",

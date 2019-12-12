@@ -1,4 +1,4 @@
-package createcontract
+package exercise
 
 import (
 	daml "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/connector/connector"
@@ -14,6 +14,8 @@ type Settings struct {
 type Input struct {
 	PackageID  string             `md:"packageId,required"`
 	Template   string             `md:"template,required"`
+	Choice     string             `md:"choice,required"`
+	ContractID string             `md:"contractId,required"`
 	Input      interface{}        `md:"input"`
 	Connection connection.Manager `md:"connector,required"`
 }
@@ -26,10 +28,12 @@ type Output struct {
 // ToMap converts activity input to a map
 func (i *Input) ToMap() map[string]interface{} {
 	return map[string]interface{}{
-		"packageId": i.PackageID,
-		"template":  i.Template,
-		"input":     i.Input,
-		"connector": i.Connection,
+		"packageId":  i.PackageID,
+		"template":   i.Template,
+		"choice":     i.Choice,
+		"contractId": i.ContractID,
+		"input":      i.Input,
+		"connector":  i.Connection,
 	}
 }
 
@@ -42,13 +46,18 @@ func (i *Input) FromMap(values map[string]interface{}) error {
 	if i.Template, err = coerce.ToString(values["template"]); err != nil {
 		return err
 	}
+	if i.Choice, err = coerce.ToString(values["choice"]); err != nil {
+		return err
+	}
+	if i.ContractID, err = coerce.ToString(values["contractId"]); err != nil {
+		return err
+	}
 	i.Input = values["input"]
-	log.Debugf("connector=%v, type=%T\n", values["connector"], values["connector"])
+
 	i.Connection, err = daml.GetSharedConfiguration(values["connector"])
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 

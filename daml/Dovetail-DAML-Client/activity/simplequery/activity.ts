@@ -15,7 +15,7 @@ import * as lodash from "lodash";
 
 @WiContrib({})
 @Injectable()
-export class CreateContractActivityContributionHandler extends WiServiceHandlerContribution {
+export class SimpleQueryActivityContributionHandler extends WiServiceHandlerContribution {
     constructor(private injector: Injector, private http: Http,) {
         super(injector, http);
     }
@@ -45,26 +45,6 @@ export class CreateContractActivityContributionHandler extends WiServiceHandlerC
                         observer.next(connectionRefs);
                     });
                 });
-            case "connector":
-                    let connections = [];
-                    return Observable.create(observer => {
-                        WiContributionUtils.getConnections(this.http, "Dovetail-DAML-Client", "DAMLLedgerConnector").subscribe((data: IConnectorContribution[]) => {
-                            data.forEach(connection => {
-                                if ((<any>connection).isValid) {
-                                    for(let i=0; i < connection.settings.length; i++) {
-                                        if(connection.settings[i].name === "display"){
-                                            connections.push({
-                                                "unique_id": WiContributionUtils.getUniqueId(connection),
-                                                "name": connection.settings[i].value
-                                            });
-                                            break;
-                                        }
-                                    }
-                                }
-                            });
-                            observer.next(connections);
-                        });
-                    });
             case "template":
                 if(Boolean(conId) == false)
                     return null;
@@ -81,28 +61,17 @@ export class CreateContractActivityContributionHandler extends WiServiceHandlerC
                                             }
                                         });
                 });
-            
-            case "input":
-                if(Boolean(conId) == false || Boolean(template) == false)
-                    return null;
-
-                return Observable.create(observer => {
-                    this.getSchemas(conId).subscribe( schemas => {
-                        var templschema = schemas.get(template)
-                        observer.next(templschema);
-                        
-                    });
-                });  
+                
             case "output":
                     if(Boolean(conId) == false || Boolean(template) == false)
                         return null;
     
-                    let result = {type:"object", properties:{status:{type:"integer"}, errors:{type:"array", items:{type:"string"}},result:{type: "object", properties:{observers:{type: "array", items:{type:"string"}}, signatories:{type:"array", properties:{type:"string"}}, contractId:{type:"string"}, templateId:{type:"object", properties:{packageId:{type:"string"}, moduleName: {type:"string"}, entityName:{type:"string"}}}, witnessParties:{type:"array", items:{type:"string"}}}}}}
+                    let result = {type:"object", properties: {status: {type:"integer"}, errors:{type:"array", items:{type:"string"}}, result:{type:"array", items:{type:"object", properties:{observers:{type: "array", items:{type:"string"}}, signatories:{type:"array", properties:{type:"string"}}, contractId:{type:"string"}, templateId:{type:"object", properties:{packageId:{type:"string"}, moduleName: {type:"string"}, entityName:{type:"string"}}}, witnessParties:{type:"array", items:{type:"string"}}, argument:{type:"object"}}}}}}
                     return Observable.create(observer => {
                         this.getSchemas(conId).subscribe( schemas => {
                             var templschema = schemas.get(template)
                             var jsonschema = JSON.parse(templschema)
-                            result.properties.result.properties["argument"] = jsonschema
+                            result.properties.result.items.properties.argument = jsonschema
                             observer.next(JSON.stringify(result));
                             
                         });
@@ -123,6 +92,26 @@ export class CreateContractActivityContributionHandler extends WiServiceHandlerC
                             }
                         });
                     });  
+            case "connector":
+                    let connections = [];
+                    return Observable.create(observer => {
+                        WiContributionUtils.getConnections(this.http, "Dovetail-DAML-Client", "DAMLLedgerConnector").subscribe((data: IConnectorContribution[]) => {
+                            data.forEach(connection => {
+                                if ((<any>connection).isValid) {
+                                    for(let i=0; i < connection.settings.length; i++) {
+                                        if(connection.settings[i].name === "display"){
+                                            connections.push({
+                                                "unique_id": WiContributionUtils.getUniqueId(connection),
+                                                "name": connection.settings[i].value
+                                            });
+                                            break;
+                                        }
+                                    }
+                                }
+                            });
+                            observer.next(connections);
+                        });
+                    });
         }
         return null;
     }

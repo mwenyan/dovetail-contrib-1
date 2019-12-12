@@ -1,11 +1,11 @@
-package createcontract
+package exercise
 
 import (
 	"encoding/json"
 	"fmt"
 	"testing"
 
-	daml "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/connector/connector"
+	damlcommon "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/common"
 	"github.com/project-flogo/core/activity"
 	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/resolve"
@@ -30,6 +30,24 @@ func TestCreate(t *testing.T) {
 	assert.NotNil(t, act, "activity should not be nil")
 }
 
+func TestEmptyArgs(t *testing.T) {
+	fmt.Println("testing")
+	var empty struct{}
+	req := damlcommon.ExerciseChoice{}
+	req.TemplateID.ModuleName = "Iou"
+	req.TemplateID.EntityName = "IouTransfer"
+	req.ContractID = "#100:0"
+	req.Choice = "IouTransfer_Accept"
+	req.Argument = empty
+
+	sreq, err := json.Marshal(req)
+	if err != nil {
+		fmt.Printf("err=%v\n", err)
+	}
+	fmt.Printf("empty=%s\n", string(sreq))
+}
+
+/*
 func TestEval(t *testing.T) {
 
 	defer func() {
@@ -51,30 +69,15 @@ func TestEval(t *testing.T) {
 	//	complexObject := &data.ComplexObject{}
 	//	err = json.Unmarshal([]byte(v), complexObject)
 
-	v := `{"observers":[],"issuer":"Alice","amount":"10000","currency":"USD","owner":"Alice"}`
+	v := `{"newOwner":"Bob"}`
 	var input interface{}
 	err = json.Unmarshal([]byte(v), &input)
 	if err != nil {
 		fmt.Errorf("json parse error: %v", err)
 	}
-	conn := make(map[string]interface{})
-	conn["display"] = "iou"
-	conn["host"] = "localhost"
-	conn["port"] = 7575
-	conn["JWT"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZWRnZXJJZCI6Ik15TGVkZ2VyIiwiYXBwbGljYXRpb25JZCI6ImZvb2JhciIsInBhcnR5IjoiQWxpY2UifQ.4HYfzjlYr1ApUDot0a6a4zB49zS_jrwRUOCkAiPMqo0"
-	conn["connectorType"] = "json-api"
-	conn["timeout"] = 30
 
-	factory := &daml.DamlLedgerServiceConnectorFactory{}
-	mgr, err := factory.NewManager(conn)
-	if err != nil {
-		fmt.Errorf("can't create connection manager: %v", err)
-	}
-
-	err = tc.SetInputObject(&Input{PackageID: "testKey", Template: "Iou:Iou", Input: input, Connection: mgr})
-	if err != nil {
-		fmt.Errorf("set input error: %v", err)
-	}
+	conn := `{"name":"iou","host":"localhost","port":7575,"JWT":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZWRnZXJJZCI6Ik15TGVkZ2VyIiwiYXBwbGljYXRpb25JZCI6ImZvb2JhciIsInBhcnR5IjoiQWxpY2UifQ.4HYfzjlYr1ApUDot0a6a4zB49zS_jrwRUOCkAiPMqo0","timeout":30}`
+	tc.SetInputObject(&Input{PackageID: "testKey", Template: "Iou:Iou", Choice: "Iou_Transfer", ContractID: "#8936:0", Input: input, ConnectionType: "json-api", ConnectionInfo: conn})
 
 	_, err = act.Eval(tc)
 	if err != nil {
@@ -83,5 +86,7 @@ func TestEval(t *testing.T) {
 
 	//check output
 	output := tc.GetOutput("output")
-	fmt.Printf("output=%v\n", output)
+	sout, err := json.Marshal(output)
+	fmt.Printf("output=%v\n", string(sout))
 }
+*/

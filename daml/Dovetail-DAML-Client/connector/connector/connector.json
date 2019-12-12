@@ -9,7 +9,8 @@
         "category": "Dovetail-DAML-Client",
         "visible": true,
         "smallIcon": "params.png",
-        "largeIcon": "params.png"
+        "largeIcon": "params.png",
+        "connectionsupport": true
     },
     "ref": "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/connector/connector",
     "keyfield": "display",
@@ -38,28 +39,50 @@
             "name": "host",
             "type": "string",
             "display": {
-                "visible":false
+                "name":"host",
+                "visible":false,
+                "description": "host",
+                "appPropertySupport":true
             }
         },
         {
             "name": "port",
-            "type": "string",
+            "type": "integer",
             "display": {
-                "visible":false
+                "name": "port",
+                "visible":false,
+                "description": "port",
+                "appPropertySupport":true
             }
         },
         {
             "name": "JWT",
             "type": "string",
             "display": {
-                "visible":false
+                "name": "JWT",
+                "visible":false,
+                "description": "JWT token",
+                "appPropertySupport":true
             }
         },
         {
-            "name": "enable SSL",
+            "name": "timeout",
+            "type": "integer",
+            "display": {
+                "name":"Time out value in seconds",
+                "visible":false,
+                "description": "timeout",
+                "appPropertySupport":true
+            }
+        },
+        {
+            "name": "enableSSL",
             "type": "boolean",
             "display": {
-                "visible":false
+                "name": "enable SSL",
+                "visible":false,
+                "description": "enable ssl",
+                "appPropertySupport":true
             }
         }
     ],

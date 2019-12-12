@@ -42,11 +42,11 @@
             },
             {
                 "name": "connector",
-                "type": "string",
+                "type": "connection",
                 "required": true,
                 "display": {
-                    "name": "Specify ledger connection",
-                    "type": "dropdown",
+                    "name": "Connection to ledger service",
+                    "type": "connection",
                     "selection":"single"
                 },
                 "allowed":[]
@@ -67,5 +67,10 @@
     ],
   
     "outputs": [
+        {
+            "name": "output",
+            "type": "complex_object",
+            "required": false
+       }
     ]
 }

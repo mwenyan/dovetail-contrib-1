@@ -1,14 +1,14 @@
 {
-    "name": "exercise",
-    "title": "Excercise Contract Choice",
+    "name": "simplequery",
+    "title": "Simple Query",
     "version": "1.0.0",
     "type": "flogo:activity",
     "author": "TIBCO Software Inc.",
     "display": {
        "category": "Dovetail-DAML-Client",
        "visible": true,
-       "smallIcon": "invoke.png",
-       "description": "exercise a contract choice"
+       "smallIcon": "query.png",
+       "description": "Query contracts"
     },
     "feature": {
         "iterator": {
@@ -16,7 +16,7 @@
                 "enabled": false
         }
     },
-    "ref": "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/activity/exercise",
+    "ref": "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/activity/simplequery",
     "inputs": [
             {
                 "name": "contract",
@@ -41,15 +41,26 @@
                 "allowed":[]
             },
             {
-                "name": "choice",
+                "name": "query",
                 "type": "string",
-                "required": true,
+                "required":true,
                 "display": {
-                    "name": "Specify the contract choice",
-                    "type": "dropdown",
-                    "selection":"single"
-                },
-                "allowed":[]
+                    "name": "Query Statement",
+                    "description": "Rich query statement with parameters prefixed by '$', e.g. {\"amount\": { \"%lt\":\"$amt\" }}",
+                    "type": "texteditor",
+                    "syntax": "json"
+                }
+            },
+            {
+                "name": "queryParams",
+                "type": "complex_object",
+                "display": {
+                    "type": "params",
+                    "name": "Query Parameters",
+                    "description": "The parameters used by the query statement",
+                    "mappable": true,
+                    "schema": "{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"parameterName\":{\"type\":\"string\"},\"type\":{\"type\":{\"enum\":[\"string\",\"number\",\"boolean\", \"date\"]}}, \"repeating\":{\"type\":{\"enum\":[\"false\",\"true\"]}}}}}"
+                }
             },
             {
                 "name": "connector",
@@ -61,24 +72,14 @@
                 },
                 "allowed":[]
             },
-            {
-                "name": "contractId",
+           {
+                "name": "packageId",
                 "type": "string",
-                "required": true
-           }, 
-           {
-                "name": "input",
-                "type": "complex_object",
-                "required": false
-           },
-           {
-            "name": "packageId",
-            "type": "string",
-            "required": true,
-            "display": {
-                "visible":false
+                "required": true,
+                "display": {
+                    "visible":false
+                }
             }
-        }
     ],
   
     "outputs": [

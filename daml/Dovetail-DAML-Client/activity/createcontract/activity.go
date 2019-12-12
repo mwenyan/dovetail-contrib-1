@@ -1,19 +1,16 @@
 package createcontract
 
 import (
-	"bytes"
 	"encoding/json"
-	"fmt"
-	"net/http"
 	"strings"
-	"time"
 
-	damlcommon "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/activity"
-	"github.com/TIBCOSoftware/flogo-lib/core/data"
+	damlcommon "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/common"
 	"github.com/project-flogo/core/activity"
+	logger "github.com/project-flogo/core/support/log"
 )
 
 var activityMd = activity.ToMetadata(&Settings{}, &Input{}, &Output{})
+var log = logger.ChildLogger(logger.RootLogger(), "daml.activity.createcontract")
 
 func init() {
 	_ = activity.Register(&Activity{}, New)
@@ -40,41 +37,31 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	if err != nil {
 		return false, err
 	}
+	log.Debugf("input body = %v\n", input.Input)
 
 	tplt := strings.Split(input.Template, ":")
 	req := damlcommon.CreateContract{}
 	req.TemplateID.ModuleName = tplt[0]
 	req.TemplateID.EntityName = tplt[1]
-	cobj, err := data.CoerceToComplexObject(input.Input)
-	if err != nil {
-		return false, err
-	}
-	req.Argument, err = data.CoerceToObject(cobj.Value)
-	if err != nil {
-		return false, err
-	}
+	req.Argument = input.Input
 
 	sreq, err := json.Marshal(req)
 	if err != nil {
 		return false, err
 	}
-	fmt.Println(string(sreq))
-	client := &http.Client{Timeout: time.Second * 30}
-	httpreq, err := http.NewRequest("POST", "http://localhost:7575/command/create", bytes.NewBuffer(sreq))
-	if err != nil {
-		return false, err
-	}
-	fmt.Println("2")
-	httpreq.Header.Add("Authorization", "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZWRnZXJJZCI6Ik15TGVkZ2VyIiwiYXBwbGljYXRpb25JZCI6ImZvb2JhciIsInBhcnR5IjoiQWxpY2UifQ.4HYfzjlYr1ApUDot0a6a4zB49zS_jrwRUOCkAiPMqo0")
-	httpreq.Header.Add("Content-Type", "application/json")
-	fmt.Println("3")
-	httpresp, err := client.Do(httpreq)
-	if err != nil {
-		fmt.Printf("4=%v\n", err)
-		return false, err
-	}
-	defer httpresp.Body.Close()
 
-	fmt.Printf("resp=%v\n", httpresp)
+	httpresp, err := damlcommon.SendCreateRequest(sreq, input.Connection)
+	if err != nil {
+		return false, err
+	}
+
+	var output interface{}
+	err = json.Unmarshal(httpresp, &output)
+	if err != nil {
+		return false, err
+	}
+
+	ctx.SetOutput("output", output)
+	log.Debugf("output body = %s\n", output)
 	return true, nil
 }

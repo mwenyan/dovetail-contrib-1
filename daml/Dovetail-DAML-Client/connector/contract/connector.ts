@@ -97,7 +97,7 @@ export class ContractConnectorService extends WiServiceHandlerContribution {
   
     createSchema(dataobjs, choice): any{
         if(Boolean(choice.arguments) && choice.arguments.length > 0){
-            var schema = {type: "object", properties:{}}
+            var schema = {type: "object", properties:{}, required:[]}
             var args = choice.arguments
             for(var a of args){
                 var p = {}
@@ -111,10 +111,12 @@ export class ContractConnectorService extends WiServiceHandlerContribution {
                 }
 
                 schema.properties[a.name] = p
+                if(!a.isOptional)
+                    schema.required.push(a.name)
             }
             return schema
         } else {
-            return {type: "any"}
+            return {}
         }
     }
 

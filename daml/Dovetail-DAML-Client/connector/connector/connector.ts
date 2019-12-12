@@ -32,6 +32,7 @@ export class ConnectorConnectorService extends WiServiceHandlerContribution {
                 case "host":
                 case "port":
                 case "JWT":
+                case "timeout":
                     return Observable.create(observer => {
                         let vresult: IValidationResult = ValidationResult.newValidationResult();
                         vresult.setVisible(true);

@@ -22,13 +22,14 @@ export class ExerciseActivityContributionHandler extends WiServiceHandlerContrib
    
     value = (fieldName: string, context: IActivityContribution): any | Observable<any> => {
         let conId = context.getField("contract").value;
+        let connector = context.getField("connector").value;
         let template = context.getField("template").value;
         let choice = context.getField("choice").value;
         switch(fieldName) {
             case "contract":
                 let connectionRefs = [];
                 return Observable.create(observer => {
-                    WiContributionUtils.getConnections(this.http, "Dovetail-DAML-Client").subscribe((data: IConnectorContribution[]) => {
+                    WiContributionUtils.getConnections(this.http, "Dovetail-DAML-Client", "DAMLTemplateSchemaConnector").subscribe((data: IConnectorContribution[]) => {
                         data.forEach(connection => {
                             if ((<any>connection).isValid) {
                                 for(let i=0; i < connection.settings.length; i++) {
@@ -45,6 +46,26 @@ export class ExerciseActivityContributionHandler extends WiServiceHandlerContrib
                         observer.next(connectionRefs);
                     });
                 });
+            case "connector":
+                    let connections = [];
+                    return Observable.create(observer => {
+                        WiContributionUtils.getConnections(this.http, "Dovetail-DAML-Client", "DAMLLedgerConnector").subscribe((data: IConnectorContribution[]) => {
+                            data.forEach(connection => {
+                                if ((<any>connection).isValid) {
+                                    for(let i=0; i < connection.settings.length; i++) {
+                                        if(connection.settings[i].name === "display"){
+                                            connections.push({
+                                                "unique_id": WiContributionUtils.getUniqueId(connection),
+                                                "name": connection.settings[i].value
+                                            });
+                                            break;
+                                        }
+                                    }
+                                }
+                            });
+                            observer.next(connections);
+                        });
+                    });
             case "template":
                 if(Boolean(conId) == false)
                     return null;
@@ -104,6 +125,32 @@ export class ExerciseActivityContributionHandler extends WiServiceHandlerContrib
                         
                     });
                 });  
+            case "output":
+                    if(Boolean(conId) == false || Boolean(template) == false)
+                        return null;
+    
+                    let result = {type:"object", properties:{status:{type:"integer"}, errors:{type:"array", items:{type:"string"}},result:{type: "object", properties:{archived:{type: "array", items:{type:"object"}},  created:{type:"array", items:{type:"object"}}}}}}
+                    result.properties.result.properties.archived.items["properties"] = {contractId:{type:"string"}, templateId:{type:"object", properties:{packageId:{type:"string"}, moduleName: {type:"string"}, entityName:{type:"string"}}}, witnessParties:{type:"array", items:{type:"string"}}}
+                    result.properties.result.properties.created.items["properties"] = {observers:{type: "array", items:{type:"string"}}, signatories:{type:"array", properties:{type:"string"}}, contractId:{type:"string"}, templateId:{type:"object", properties:{packageId:{type:"string"}, moduleName: {type:"string"}, entityName:{type:"string"}}}, witnessParties:{type:"array", items:{type:"string"}}, argument:{type:"object"}}
+                    return JSON.stringify(result)
+                   
+           
+            case "packageId":
+                    if(Boolean(conId) == false)
+                        return null;
+    
+                    return Observable.create(observer => {
+                        WiContributionUtils.getConnection(this.http, conId)
+                        .map(data => data)
+                        .subscribe(data => {
+                            for (let setting of data.settings) {
+                                if (setting.name === "packageId") {
+                                    observer.next(setting.value);
+                                    break;
+                                }
+                            }
+                        });
+                    });  
         }
         return null;
     }

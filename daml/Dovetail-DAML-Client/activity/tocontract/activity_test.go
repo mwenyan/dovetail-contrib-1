@@ -1,11 +1,10 @@
-package createcontract
+package parsecontract
 
 import (
 	"encoding/json"
 	"fmt"
 	"testing"
 
-	daml "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/connector/connector"
 	"github.com/project-flogo/core/activity"
 	"github.com/project-flogo/core/data/mapper"
 	"github.com/project-flogo/core/data/resolve"
@@ -51,31 +50,16 @@ func TestEval(t *testing.T) {
 	//	complexObject := &data.ComplexObject{}
 	//	err = json.Unmarshal([]byte(v), complexObject)
 
-	v := `{"observers":[],"issuer":"Alice","amount":"10000","currency":"USD","owner":"Alice"}`
+	v := `{"newOwner":"Bob"}`
 	var input interface{}
 	err = json.Unmarshal([]byte(v), &input)
 	if err != nil {
 		fmt.Errorf("json parse error: %v", err)
 	}
-	conn := make(map[string]interface{})
-	conn["display"] = "iou"
-	conn["host"] = "localhost"
-	conn["port"] = 7575
-	conn["JWT"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZWRnZXJJZCI6Ik15TGVkZ2VyIiwiYXBwbGljYXRpb25JZCI6ImZvb2JhciIsInBhcnR5IjoiQWxpY2UifQ.4HYfzjlYr1ApUDot0a6a4zB49zS_jrwRUOCkAiPMqo0"
-	conn["connectorType"] = "json-api"
-	conn["timeout"] = 30
 
-	factory := &daml.DamlLedgerServiceConnectorFactory{}
-	mgr, err := factory.NewManager(conn)
-	if err != nil {
-		fmt.Errorf("can't create connection manager: %v", err)
-	}
-
-	err = tc.SetInputObject(&Input{PackageID: "testKey", Template: "Iou:Iou", Input: input, Connection: mgr})
-	if err != nil {
-		fmt.Errorf("set input error: %v", err)
-	}
-
+	conn := `{"name":"iou","host":"localhost","port":7575,"JWT":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZWRnZXJJZCI6Ik15TGVkZ2VyIiwiYXBwbGljYXRpb25JZCI6ImZvb2JhciIsInBhcnR5IjoiQWxpY2UifQ.4HYfzjlYr1ApUDot0a6a4zB49zS_jrwRUOCkAiPMqo0","timeout":30}`
+	err = json.Unmarshal([]byte(conn), &input)
+	tc.SetInputObject(&Input{Input: input})
 	_, err = act.Eval(tc)
 	if err != nil {
 		fmt.Errorf("has error: %v", err)
@@ -83,5 +67,6 @@ func TestEval(t *testing.T) {
 
 	//check output
 	output := tc.GetOutput("output")
-	fmt.Printf("output=%v\n", output)
+	sout, err := json.Marshal(output)
+	fmt.Printf("output=%v\n", string(sout))
 }
