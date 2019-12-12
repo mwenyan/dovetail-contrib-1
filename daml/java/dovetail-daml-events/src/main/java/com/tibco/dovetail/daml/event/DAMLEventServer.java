@@ -40,7 +40,7 @@ public class DAMLEventServer {
 		try {
 			CommandLine cmds = cmdParser.parse(opts, args, false);
 			if(cmds.hasOption("h") || cmds.hasOption("help")){
-				 formatter.printHelp("myapp", header, opts, footer, true);
+				 formatter.printHelp("java -jar <path to daml event server jar>", header, opts, footer, true);
 				 System.exit(0);
 			}
 			
