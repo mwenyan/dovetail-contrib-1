@@ -3,6 +3,7 @@ package com.tibco.dovetail.daml.event;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
 import java.lang.reflect.Constructor;
@@ -27,35 +28,50 @@ public class DAMLEventServer {
 		DefaultParser cmdParser = new DefaultParser();
 		Options opts = new Options();
 		opts.addRequiredOption("c", "config", true, "path to configuration yaml file");
-		opts.addRequiredOption("h", "host", true, "ledger host");
+		opts.addRequiredOption("s", "server", true, "ledger host");
 		opts.addRequiredOption("p", "port", true, "ledger port");
+		opts.addOption("h", "help", false, "print help");
+		 
+		 String header = "DAML event server \n\n";
+		 String footer = "";
+		 
+		 HelpFormatter formatter = new HelpFormatter();
 
 		try {
 			CommandLine cmds = cmdParser.parse(opts, args, false);
+			if(cmds.hasOption("h") || cmds.hasOption("help")){
+				 formatter.printHelp("myapp", header, opts, footer, true);
+				 System.exit(0);
+			}
+			
 			String configfile = cmds.getOptionValue("c");
-			String host = cmds.getOptionValue("h");
+			String host = cmds.getOptionValue("s");
 			String port = cmds.getOptionValue("p");
 			
 			AppConfig config = AppConfig.parse(configfile);
 			
 			DamlLedgerClient client = DamlLedgerClient.forHostWithLedgerIdDiscovery(host, Integer.valueOf(port), Optional.empty());
 	        client.connect();
-	        System.out.println("Dovetail DAML Event Server is started...");
+	        System.out.println("Starting Dovetail DAML Event Server ...");
 	        
 	        subscribeTransactionEvents(client, config);
 	        subscribeCommandEvents(client, config);
+	        
+	     // Run until user terminates
+	        while (true)
+	            try {
+	                Thread.sleep(1000);
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	        
 		} catch (Throwable e) {
 			e.printStackTrace();
+			 formatter.printHelp("java -jar <path to daml event server jar>", header, opts, footer, true);
 		}
 		
-		// Run until user terminates
-        while (true)
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 	}
+	
 	
 	private static void subscribeTransactionEvents(DamlLedgerClient client, AppConfig config) throws Exception {
         Publisher pub = getPublisher(config, config.getAppId() + "_transaction");
