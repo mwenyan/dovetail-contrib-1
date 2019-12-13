@@ -5,35 +5,39 @@ weight: 4603
 
 We will create an application that integrates with the [IOU example provided by DAML SDK Quickstart guide](https://docs.daml.com/getting-started/quickstart.html). Please refer the quickstart guide on the use case details and install daml SDK as instructed. 
 
+You must have DAML SDK, java 1.8 and above, Tibco Enterprise Flogo 2.8, and docker installed.
+
 ## Setup Quickstart daml project
 
-- download quickstart daml project
+- **download quickstart daml project**
 ```
 daml new quickstart quickstart-java
 ```
-- build DAR file
+- **build DAR file**
 ```
 cd quickstart
 
 daml build
 ```
-- start up sandbox
+- **start up sandbox**
 ```
 daml sandbox --wall-clock-time --ledgerid MyLedger .daml/dist/quickstart-0.0.1.dar
 ```
-- start up navigator
+- **start up navigator**
 ```
 daml navigator server
 ```
-- start up json-api server
+- **start up json-api server**
 ```
 json-api --ledger-host  localhost --ledger-port 6865 --http-port 7575
 ```
 ## Develop integration application
 
-- download artifacts from the artifacts/ folder
+- **download** all files from the [artifacts](artifacts/) folder
 
-- extracts metadata from dar file
+  we assume you are running all commands from the parent folder of artifacts
+
+- **extracts** metadata from dar file
 ```
 java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstart/.daml/dist/quickstart-0.0.1.dar -o <path to output>
 ```
@@ -239,7 +243,7 @@ from the Build dropdown, select your platform, the build process will take a cou
   ```
   curl -d '{"amount":300}' -H "Content-Type: application/json" -X POST http://localhost:9090/alice_issue_iou_to_bob
   ```
-  
+
 - go to navigator UI http://localhost:4000 to view contracts created or archived
 
     
