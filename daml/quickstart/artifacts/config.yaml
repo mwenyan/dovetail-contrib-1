@@ -1,0 +1,23 @@
+appId: foobar
+filters:
+  - party: "Alice"
+    templates:
+      - packageId: "0e070f5e735cea63f0ed08bcaff4987a236174c94a2d6fd89950db1bc34ca207"
+        moduleName: "Iou"
+        entityName: "Iou"
+      - packageId: "0e070f5e735cea63f0ed08bcaff4987a236174c94a2d6fd89950db1bc34ca207"
+        moduleName: "Iou"
+        entityName: "IouTransfer"
+messaging:
+  type: "kafka"
+  className: "com.tibco.dovetail.messaging.kafka.KafkaPublisher"
+  properties:
+    bootstrap.servers: "localhost:19092"
+    clientId: "IouApp"
+    Iou.Iou.created: "iou.created"
+    Iou.Iou.archived: "iou.archived"
+    Iou.IouTransfer.created: "ioutransfer.created"
+    Iou.IouTransfer.archived: "ioutransfer.archived"
+    command: command.status
+  
+  

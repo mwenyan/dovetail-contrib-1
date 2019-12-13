@@ -1,11 +1,11 @@
 {
     "name": "DAMLTemplateSchemaConnector",
     "version": "1.0.0",
-    "title": "Import DAML Metadata Connection",
+    "title": "Import DAML Metadata",
     "type": "flogo:connector",
     "author": "TIBCO Software Inc.",
     "display": {
-        "description": "Import DAML Metadata Connection",
+        "description": "Import DAML Metadata",
         "category": "Dovetail-DAML-Client",
         "visible": true,
         "smallIcon": "params.png",

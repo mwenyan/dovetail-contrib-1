@@ -78,9 +78,8 @@
 				            <mainClass>com.tibco.dovetail.daml.event.DAMLEventServer</mainClass>
 				          </transformer>
 				        </transformers>
-				        <finalName>daml-event-server-${project.version}</finalName>
+				       <finalName>daml-events-${project.version}</finalName>
 				        <shadedArtifactAttached>true</shadedArtifactAttached>
-				        <shadedClassifierName>uber</shadedClassifierName>
 				      </configuration>  
 				    </execution>
 				  </executions>

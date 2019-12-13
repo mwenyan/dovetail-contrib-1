@@ -26,13 +26,17 @@ DAML integration project provides tools and components to facilitate simple and 
 
     Emits events of contract creation, contract archival and command status to a messaging middleware, at present, Kafka is supported, others will be supported in the future.
 
-    These events can be used to trigger flogo flows or other event-driven client applications, they can also consumed by rules engine, such as Tibco BusinessEvents, to create more complex state-driven client applications.
+    These events can be used to trigger flogo flows or other event-driven client applications, they can also be consumed by rules engine, such as Tibco BusinessEvents, to create more complex state-driven client applications.
 
 ## Development Process
 
 <p align="center">
   <img src ="images/develop.png" />
 </p>
+
+## Quick Start
+
+Walk through [Quick Start](quickstart/README.md) to get started.
 
 ### Contributing
 

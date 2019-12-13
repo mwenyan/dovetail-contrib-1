@@ -72,7 +72,6 @@
 				        </transformers>
 				        <finalName>daml-parser-${project.version}</finalName>
 				        <shadedArtifactAttached>true</shadedArtifactAttached>
-				        <shadedClassifierName>uber</shadedClassifierName> 
 				      </configuration>        
 				    </execution>
 				    </executions>

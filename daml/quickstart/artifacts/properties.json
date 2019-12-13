@@ -1,0 +1,6 @@
+{
+    "Kafka.kafka.Brokers": "192.168.1.9:19092",
+    "Dovetail-DAML-Client.alice_iou_server.host": "192.168.1.9",
+    "Dovetail-DAML-Client.bob_iou_server.host": "192.168.1.9",
+    "bob.iou_transfer_topic": "ioutransfer.created"
+}
