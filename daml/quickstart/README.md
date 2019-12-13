@@ -41,14 +41,14 @@ json-api --ledger-host  localhost --ledger-port 6865 --http-port 7575
 ```
 java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstart/.daml/dist/quickstart-0.0.1.dar -o <path to output>
 ```
-- go to Tibco Enterprise Flogo Studio or Tibco Cloud Integration, from Extensions tab, upload Dovetail-DAML-Client.zip
+- **upload** artifacts/Dovetail-DAML-Client.zip into Tibco Enterprise Flogo Studio or Tibco Cloud Integration from Extensions tab
 
-- import DAR metadata
+- **import** DAR metadata
   * from studio Connections tab -> Add Connection -> select "Import DAML Metadata"
   * browse to you metadata file
   * name: iou
 
-- configure json-api connection information for Party Alice
+- **configure** json-api connection information for Party Alice
   * from studio Connections tab -> Add Connection -> select "DAML Ledger Service Connector"
   * enter connection information
     * name: alice iou server
@@ -57,7 +57,7 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
     * JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZWRnZXJJZCI6Ik15TGVkZ2VyIiwiYXBwbGljYXRpb25JZCI6ImZvb2JhciIsInBhcnR5IjoiQWxpY2UifQ.4HYfzjlYr1ApUDot0a6a4zB49zS_jrwRUOCkAiPMqo0
     * timeout: 30
 
-- configure json-api connection information for Party Bob
+- **configure** json-api connection information for Party Bob
   * from studio Connections tab -> Add Connection -> select "DAML Ledger Service Connector"
   * enter connection information
     * name: bob iou server
@@ -66,12 +66,12 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
     * JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZWRnZXJJZCI6Ik15TGVkZ2VyIiwiYXBwbGljYXRpb25JZCI6ImZvb2JhciIsInBhcnR5IjoiQm9iIn0.2LE3fAvUzLx495JWpuSzHye9YaH3Ddt4d2Pj0L1jSjA
     * timeout: 30
 
-- configure a kafka connection
+- **configure** a kafka connection
   * from studio Connections tab -> Add Connection -> select "Apache Kafka Client Configuration"
     * name: kafka
     * brokers: 192.168.1.3:19092
 
-- create integration application
+- **develop** integration application
 
 We will build two simple flows, 
 * Alice will issue an IOU and transfer it to Bob
