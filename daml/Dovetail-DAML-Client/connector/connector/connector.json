@@ -1,7 +1,7 @@
 {
     "name": "DAMLLedgerConnector",
     "version": "1.0.0",
-    "title": "DAML Ledger connector",
+    "title": "DAML Ledger Service Connector",
     "type": "flogo:connector",
     "author": "TIBCO Software Inc.",
     "display": {
