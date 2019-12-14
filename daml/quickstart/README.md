@@ -193,6 +193,7 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
    <p align="center">
     <img src ="../images/bob_accept.png" />
   </p>
+  
 ### Test flows
 
 you can test the flows in the Studio
