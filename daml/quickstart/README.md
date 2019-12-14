@@ -141,6 +141,7 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
    <p align="center">
     <img src ="../images/alice_issue_iou_to_bob.png" />
   </p>
+  
   4. create a flow bob_accept_iou_transfer
    * add KafkaConsumer trigger
      * select kafka connection
@@ -190,7 +191,7 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
      * add Return, and map input
    * you application should look like this
    <p align="center">
-    <img src ="../bob_accept.png" />
+    <img src ="../images/bob_accept.png" />
   </p>
 ### Test flows
 
