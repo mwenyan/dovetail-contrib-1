@@ -141,7 +141,7 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
    <p align="center">
     <img src ="../images/alice_issue_iou_to_bob.png" />
   </p>
-  
+
   4. create a flow bob_accept_iou_transfer
    * add KafkaConsumer trigger
      * select kafka connection
@@ -182,13 +182,13 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
             "contractId":""
         }
         ```
-     * add Dovetail-Client-DAML/ExerciseContractChoice activity
+   * add Dovetail-Client-DAML/ExerciseContractChoice activity
         * select iou from DAML package dropdown
         * select Iou:IouTransfer from contract template dropdown
         * select IouTransfer_Accept from contract choice dropdown
         * select "bob iou server" from ledger service dropdown
         * map Input
-     * add Return, and map input
+   * add Return, and map input
    * you application should look like this
    <p align="center">
     <img src ="../images/bob_accept.png" />
