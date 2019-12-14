@@ -73,17 +73,17 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
 
 - **develop** integration application
 
-We will build two simple flows, 
-* Alice will issue an IOU and transfer it to Bob
-* Bob will receive the IouTranfer.created event from Kafka and accept the transfer
+  We will build two simple flows, 
+  * Alice will issue an IOU and transfer it to Bob
+  * Bob will receive the IouTranfer.created event from Kafka and accept the transfer
 
-### Steps to create the application
- * create an application "iou"
- * add App properties
+#### Steps to create the application
+ 1. create an application "iou"
+ 2. add App properties
    * add a group "bob"
      * add group variable "iou_transfer_topic": ioutransfer.created
      * add group variable "consumer_group_name": bob
- * create a flow alice_issue_iou_to_bob
+ 3. create a flow alice_issue_iou_to_bob
    * add a trigger "ReceiveHTTPMessage"
      * port: 9090
      * method: POST
@@ -135,7 +135,7 @@ We will build two simple flows,
      * condition: $activity[CreateContract].output.status != 200
      * add default/ThrowError activity
 
-  * create a flow bob_accept_iou_transfer
+  4. create a flow bob_accept_iou_transfer
    * add KafkaConsumer trigger
      * select kafka connection
      * topic: use App property bob.iou_transfer_toic
@@ -183,24 +183,24 @@ We will build two simple flows,
         * map Input
      * add Return, and map input
 
-### Test flows
+#### Test flows
 
 you can test the flows in the Studio
 
-### Build application
+#### Build application
 
 from the Build dropdown, select your platform, the build process will take a couple minutes
 
-## Run the application
+#### Run the application
 
-- start up kafka
+- **start up kafka**
   you can use you own Kafka server, or use the docker image provided in artifacts folder
 
   ```
   MY_IP=<your ip here> docker-compose -f artifacts/docker-compose.yaml up
   ```
 
-- create topics
+- **create topics**
   for this application, following topics are required, you can use artifiacts/createtopic.sh script.
   * iou.created
   * iou.archived
@@ -212,13 +212,13 @@ from the Build dropdown, select your platform, the build process will take a cou
   artifacts/createtopic.sh iou.created
   ```
 
-- you can use script artifacts/test_subscriber.sh to verify events are published to the topics
+  you can use script artifacts/test_subscriber.sh to verify events are published to the topics
 
   ```
   artifacts/test_subscriber.sh ioutransfer.created
   ```
 
-- start up the Dovtail event server from DAML
+- **start up the Dovtail event server from DAML**
   
   the event server uses a config.yaml file for configuration settings, an example is provided in artifacts folder, you might need to modify the packageId to match your DAR packageId value.
 
@@ -226,7 +226,7 @@ from the Build dropdown, select your platform, the build process will take a cou
   java -jar artifacts/daml-events-0.0.1-SNAPSHOT-shaded.jar -c artifacts/config.yaml -s localhost -p 6865
   ```
 
-- run the application
+- **run the application**
 
   ```
   ./<your app exec>
@@ -238,13 +238,15 @@ from the Build dropdown, select your platform, the build process will take a cou
   FLOGO_APP_PROPS_JSON=artifacts/properties.json FLOGO_LOG_LEVEL=INFO ./<your app exec>
   ```
 
-- invoke the alice_issue_iou_to bob flow
+- **invoke the alice_issue_iou_to bob flow**
 
   ```
   curl -d '{"amount":300}' -H "Content-Type: application/json" -X POST http://localhost:9090/alice_issue_iou_to_bob
   ```
 
-- go to navigator UI http://localhost:4000 to view contracts created or archived
+- **view contracts**
+  
+  go to navigator UI http://localhost:4000 to view contracts created or archived
 
     
 
