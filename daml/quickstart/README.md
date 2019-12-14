@@ -33,6 +33,8 @@ json-api --ledger-host  localhost --ledger-port 6865 --http-port 7575
 ```
 ## Develop integration application
 
+### Configure connections
+
 - **download** all files from the [artifacts](artifacts/) folder
 
   we assume you are running all commands from the parent folder of artifacts
@@ -69,7 +71,7 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
 - **configure** a kafka connection
   * from studio Connections tab -> Add Connection -> select "Apache Kafka Client Configuration"
     * name: kafka
-    * brokers: 192.168.1.3:19092
+    * brokers: localhost:19092
 
 - **develop** integration application
 
@@ -77,7 +79,7 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
   * Alice will issue an IOU and transfer it to Bob
   * Bob will receive the IouTranfer.created event from Kafka and accept the transfer
 
-#### Steps to create the application
+### Develop flows
  1. create an application "iou"
  2. add App properties
    * add a group "bob"
@@ -183,15 +185,15 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
         * map Input
      * add Return, and map input
 
-#### Test flows
+### Test flows
 
 you can test the flows in the Studio
 
-#### Build application
+### Build application
 
 from the Build dropdown, select your platform, the build process will take a couple minutes
 
-#### Run the application
+### Run the application
 
 - **start up kafka**
   you can use you own Kafka server, or use the docker image provided in artifacts folder
