@@ -1,7 +1,0 @@
-13:48:51.487 [main] INFO  ROOT - Sandbox verbosity changed to INFO 
-13:48:53.810 [sandbox-akka.actor.default-dispatcher-4] INFO  c.d.l.s.a.ApiServices$:participant/sandbox-participant - DAML LF Engine supports LF versions: 0, 0.dev, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.dev; Transaction versions: 1, 2, 3, 4, 5, 6, 7, 8; Value versions: 1, 2, 3, 4, 5, 6 
-13:48:54.035 [sandbox-akka.actor.default-dispatcher-4] INFO  c.d.l.s.a.LedgerApiServer:participant/sandbox-participant - Starting plainText server 
-13:48:54.521 [sandbox-akka.actor.default-dispatcher-4] INFO  c.d.l.s.a.LedgerApiServer:participant/sandbox-participant - listening on localhost:6865 
-13:48:54.534 [main] INFO  c.d.platform.sandbox.SandboxServer$ - Initialized sandbox version 100.13.36 with ledger-id = MyLedger, port = 6865, dar file = List(./artifacts/quickstart-0.0.1.dar), time mode = WallClock, ledger = in-memory, auth-service = AuthServiceWildcard$ 
-13:49:14.383 [Thread-1] INFO  c.d.p.s.s.c.ApiCommandService:participant/sandbox-participant - Shutting down Command Service 
-13:49:14.383 [Thread-1] INFO  c.d.p.s.s.c.TrackerMap:participant/sandbox-participant - Shutting down 0 trackers 
