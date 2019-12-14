@@ -137,6 +137,10 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
      * condition: $activity[CreateContract].output.status != 200
      * add default/ThrowError activity
 
+   * you application should look like this
+   <p align="center">
+    <img src ="../images/alice_issue_iou_to_bob.png" />
+  </p>
   4. create a flow bob_accept_iou_transfer
    * add KafkaConsumer trigger
      * select kafka connection
@@ -184,7 +188,10 @@ java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstar
         * select "bob iou server" from ledger service dropdown
         * map Input
      * add Return, and map input
-
+   * you application should look like this
+   <p align="center">
+    <img src ="../bob_accept.png" />
+  </p>
 ### Test flows
 
 you can test the flows in the Studio
