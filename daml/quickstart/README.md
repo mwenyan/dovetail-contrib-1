@@ -42,19 +42,22 @@ daml navigator server
 ```
 daml json-api --ledger-host  localhost --ledger-port 6865 --http-port 7575
 ```
-## Develop integration application
+## Develop integration application with Tibco Enterprise Flogo
 
 ### Configure connections
 
 - **extracts** metadata from dar file
 ```
-java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a <path to>/quickstart/.daml/dist/quickstart-0.0.1.dar -o <path to output>
+java -jar artifacts/daml-parser-0.0.1-SNAPSHOT-shaded.jar -a quickstart/.daml/dist/quickstart-0.0.1.dar
 ```
+
+file quickstart-0.0.1.json will be generated inside the tutorial folder
+
 - **upload** artifacts/Dovetail-DAML-Client.zip into Tibco Enterprise Flogo Studio or Tibco Cloud Integration from Extensions tab
 
 - **import** DAR metadata
   * from studio Connections tab -> Add Connection -> select "Import DAML Metadata"
-  * browse to you metadata file
+  * browse to you metadata file quickstart-0.0.1.json
   * name: iou
 
 - **configure** json-api connection information for Party Alice
