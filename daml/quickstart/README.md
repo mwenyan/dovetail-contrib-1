@@ -251,6 +251,7 @@ from the Build dropdown, select your platform, the build process will take a cou
   ```
   
 - **run the application**
+  
   You need to update artifacts/properties.json file with your IP
 
   ```
