@@ -2,6 +2,7 @@ package exercise
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	damlcommon "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/common"
@@ -73,48 +74,66 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	finalout := damlcommon.ExerciseChoiceResult{}
 	txns := damlcommon.ExerciseChoiceTxnOut{Archived: make([]damlcommon.ArchivedContract, 0), Created: make([]damlcommon.CreatedContract, 0)}
 	mapoutput := output.(map[string]interface{})
+	log.Debugf("output from json api server = %v\n", mapoutput)
+
 	for k, v := range mapoutput {
 		if k == "status" {
 			finalout.Status = int(v.(float64))
 		} else if k == "result" {
-			result := v.([]interface{})
-			for _, rslt := range result {
-				r := rslt.(map[string]interface{})
-				if rv, ok := r["archived"]; ok {
-					maprv := rv.(map[string]interface{})
-					archived := damlcommon.ArchivedContract{}
-					archived.WitnessParties = maprv["witnessParties"]
-					archived.ContractID = maprv["contractId"].(string)
-					template := maprv["templateId"].(map[string]interface{})
-					archived.TemplateID.PackageID = template["packageId"].(string)
-					archived.TemplateID.ModuleName = template["moduleName"].(string)
-					archived.TemplateID.EntityName = template["entityName"].(string)
-					txns.Archived = append(txns.Archived, archived)
-				} else if rv, ok := r["created"]; ok {
-					maprv := rv.(map[string]interface{})
-					created := damlcommon.CreatedContract{}
-					created.WitnessParties = maprv["witnessParties"]
-					created.ContractID = maprv["contractId"].(string)
-					template := maprv["templateId"].(map[string]interface{})
-					created.TemplateID.PackageID = template["packageId"].(string)
-					created.TemplateID.ModuleName = template["moduleName"].(string)
-					created.TemplateID.EntityName = template["entityName"].(string)
-					if agree, ok := maprv["agreementText"]; ok {
-						created.AgreementText = agree.(string)
-					} else {
-						created.AgreementText = ""
-					}
-					created.Signatories = maprv["signatories"]
-					created.Observers = maprv["obervers"]
-					created.Argument = maprv["argument"]
-					txns.Created = append(txns.Created, created)
+			result, ok := v.(map[string]interface{})
+			if ok {
+				for _, rslt := range result["contracts"].([]interface{}) {
+					r := rslt.(map[string]interface{})
+					txns = processResults(txns, r)
 				}
+			} else {
+				return false, fmt.Errorf("Error processing exercise choice output")
 			}
+
 			finalout.Result = txns
+		} else if k == "errors" {
+			finalout.Errors = make([]string, 0)
+			errors := v.([]interface{})
+			for _, e := range errors {
+				finalout.Errors = append(finalout.Errors, e.(string))
+			}
 		}
 	}
 
 	ctx.SetOutput("output", finalout)
 	log.Debugf("output body = %s\n", output)
 	return true, nil
+}
+
+func processResults(txns damlcommon.ExerciseChoiceTxnOut, result map[string]interface{}) damlcommon.ExerciseChoiceTxnOut {
+	if rv, ok := result["archived"]; ok {
+		maprv := rv.(map[string]interface{})
+		archived := damlcommon.ArchivedContract{}
+		archived.WitnessParties = maprv["witnessParties"]
+		archived.ContractID = maprv["contractId"].(string)
+		template := maprv["templateId"].(map[string]interface{})
+		archived.TemplateID.PackageID = template["packageId"].(string)
+		archived.TemplateID.ModuleName = template["moduleName"].(string)
+		archived.TemplateID.EntityName = template["entityName"].(string)
+		txns.Archived = append(txns.Archived, archived)
+	} else if rv, ok := result["created"]; ok {
+		maprv := rv.(map[string]interface{})
+		created := damlcommon.CreatedContract{}
+		created.WitnessParties = maprv["witnessParties"]
+		created.ContractID = maprv["contractId"].(string)
+		template := maprv["templateId"].(map[string]interface{})
+		created.TemplateID.PackageID = template["packageId"].(string)
+		created.TemplateID.ModuleName = template["moduleName"].(string)
+		created.TemplateID.EntityName = template["entityName"].(string)
+		if agree, ok := maprv["agreementText"]; ok {
+			created.AgreementText = agree.(string)
+		} else {
+			created.AgreementText = ""
+		}
+		created.Signatories = maprv["signatories"]
+		created.Observers = maprv["obervers"]
+		created.Argument = maprv["argument"]
+		txns.Created = append(txns.Created, created)
+	}
+	return txns
 }

@@ -31,7 +31,7 @@ func TestCreate(t *testing.T) {
 }
 
 func TestEmptyArgs(t *testing.T) {
-	fmt.Println("testing")
+	fmt.Println("testing empty args...")
 	var empty struct{}
 	req := damlcommon.ExerciseChoice{}
 	req.TemplateID.ModuleName = "Iou"
@@ -63,12 +63,6 @@ func TestEval(t *testing.T) {
 	assert.Nil(t, err)
 
 	tc := test.NewActivityContext(act.Metadata())
-	//	inputmp := make(map[string]interface{})
-	//	inputmp["Value"] = `{"observers":[],"issuer":"Alice","amount":"10000","currency":"USD","owner":"Alice"}`
-	//	v, err := json.Marshal(inputmp)
-	//	complexObject := &data.ComplexObject{}
-	//	err = json.Unmarshal([]byte(v), complexObject)
-
 	v := `{"newOwner":"Bob"}`
 	var input interface{}
 	err = json.Unmarshal([]byte(v), &input)
@@ -76,9 +70,27 @@ func TestEval(t *testing.T) {
 		fmt.Errorf("json parse error: %v", err)
 	}
 
-	conn := `{"name":"iou","host":"localhost","port":7575,"JWT":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZWRnZXJJZCI6Ik15TGVkZ2VyIiwiYXBwbGljYXRpb25JZCI6ImZvb2JhciIsInBhcnR5IjoiQWxpY2UifQ.4HYfzjlYr1ApUDot0a6a4zB49zS_jrwRUOCkAiPMqo0","timeout":30}`
-	tc.SetInputObject(&Input{PackageID: "testKey", Template: "Iou:Iou", Choice: "Iou_Transfer", ContractID: "#8936:0", Input: input, ConnectionType: "json-api", ConnectionInfo: conn})
+	//conn := `{"name":"iou","host":"localhost","port":7575,"JWT":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZWRnZXJJZCI6Ik15TGVkZ2VyIiwiYXBwbGljYXRpb25JZCI6ImZvb2JhciIsInBhcnR5IjoiQWxpY2UifQ.4HYfzjlYr1ApUDot0a6a4zB49zS_jrwRUOCkAiPMqo0","timeout":30}`
+	conn := make(map[string]interface{})
+	conn["name"] = "iou"
+	conn["host"] = "localhost"
+	conn["port"] = 7575
+	conn["JWT"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZWRnZXJJZCI6Ik15TGVkZ2VyIiwiYXBwbGljYXRpb25JZCI6ImZvb2JhciIsInBhcnR5IjoiQWxpY2UifQ.4HYfzjlYr1ApUDot0a6a4zB49zS_jrwRUOCkAiPMqo0"
+	conn["timeout"] = 30
+	conn["connectorType"] = "json-api"
+	config := connection.Config{Ref: "github.com/TIBCOSoftware/dovetail-contrib/daml/Dovetail-DAML-Client/connector/connector", Settings: conn}
+	err = connection.ResolveConfig(&config)
+	if err != nil {
+		fmt.Errorf("to config error: %v", err)
+	}
+	fmt.Printf("config=%v\n", config)
+	mgr, err := connection.NewManager(&config)
+	if err != nil {
+		fmt.Errorf("to manager error: %v", err)
+	}
 
+	tc.SetInputObject(&Input{PackageID: "testKey", Template: "Iou:Iou", Choice: "Iou_Transfer", ContractID: "#29260:0", Input: input, Connection: mgr})
+	fmt.Println("2")
 	_, err = act.Eval(tc)
 	if err != nil {
 		fmt.Errorf("has error: %v", err)

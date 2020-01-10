@@ -83,8 +83,10 @@ type DAJsonAPIConn struct {
 //SendExerciseRequest will send exercise choice command to ledger
 func SendExerciseRequest(req []byte, cnn connection.Manager) ([]byte, error) {
 	config := cnn.(*daml.APIServerSharedConfigManager).GetClientConfiguration()
+
 	if config.ConnectorType == "json-api" {
 		url := fmt.Sprintf("http://%s:%d/command/exercise", config.Host, config.Port)
+
 		return sendReqToDAJsonApi(req, url, config)
 	}
 	return nil, fmt.Errorf("Ledger connection type is not supported: %s", config.ConnectorType)

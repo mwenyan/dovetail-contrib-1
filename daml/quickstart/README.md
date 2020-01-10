@@ -8,7 +8,9 @@ We will create an application that integrates with the [IOU example provided by 
 You must have DAML SDK, java 1.8 and above, Tibco Enterprise Flogo 2.8, and docker installed.
 
 ## Setup Quickstart daml project
-
+- **create** a folder "tutorial"
+- **create** a subfolder "artifacts"
+- change to tutorial folder
 - **download quickstart daml project**
 ```
 daml new quickstart quickstart-java
@@ -19,6 +21,11 @@ cd quickstart
 
 daml build
 ```
+
+if it prompts for upgrade to latest version of daml SDK, follow the instructions, then run "daml build" again.
+
+run following commands for the quickstart folder.
+
 - **start up sandbox**
 ```
 daml sandbox --wall-clock-time --ledgerid MyLedger .daml/dist/quickstart-0.0.1.dar
@@ -29,15 +36,15 @@ daml navigator server
 ```
 - **start up json-api server**
 ```
-json-api --ledger-host  localhost --ledger-port 6865 --http-port 7575
+daml json-api --ledger-host  localhost --ledger-port 6865 --http-port 7575
 ```
 ## Develop integration application
 
 ### Configure connections
 
-- **download** all files from the [artifacts](artifacts/) folder
+- **download** artifacts.zip from the [artifacts](artifacts/) folder and unzip contents to your artifacts folder
 
-  we assume you are running all commands from the parent folder of artifacts
+  we assume you are running all commands from the parent folder "tutorial"
 
 - **extracts** metadata from dar file
 ```
@@ -221,6 +228,10 @@ from the Build dropdown, select your platform, the build process will take a cou
 
   ```
   artifacts/createtopic.sh iou.created
+  artifacts/createtopic.sh iou.archived
+  artifacts/createtopic.sh ioutransfer.created
+  artifacts/createtopic.sh ioutransfer.archived
+  artifacts/createtopic.sh command.status
   ```
 
   you can use script artifacts/test_subscriber.sh to verify events are published to the topics
@@ -233,17 +244,14 @@ from the Build dropdown, select your platform, the build process will take a cou
   
   the event server uses a config.yaml file for configuration settings, an example is provided in artifacts folder, you might need to modify the packageId to match your DAR packageId value.
 
+  * you might need to update the file artifacts/config.yaml with your daml package id, you can find the package id from Navigator UI templates tab, e.g. Iou:Iou@0f766bec38fe370b7dc4ae41c28c24a8f85e3fce087c496146f414772924a172, the package id is 0f766bec38fe370b7dc4ae41c28c24a8f85e3fce087c496146f414772924a172
+
   ```
   java -jar artifacts/daml-events-0.0.1-SNAPSHOT-shaded.jar -c artifacts/config.yaml -s localhost -p 6865
   ```
-
+  
 - **run the application**
-
-  ```
-  ./<your app exec>
-  ```
-
-  if you need to override app properties, you can pass a properties.json file to your program, an example is in artifacts folder
+  You need to update artifacts/properties.json file with your IP
 
   ```
   FLOGO_APP_PROPS_JSON=artifacts/properties.json FLOGO_LOG_LEVEL=INFO ./<your app exec>

@@ -2,10 +2,10 @@ appId: foobar
 filters:
   - party: "Alice"
     templates:
-      - packageId: "0e070f5e735cea63f0ed08bcaff4987a236174c94a2d6fd89950db1bc34ca207"
+      - packageId: "0f766bec38fe370b7dc4ae41c28c24a8f85e3fce087c496146f414772924a172"
         moduleName: "Iou"
         entityName: "Iou"
-      - packageId: "0e070f5e735cea63f0ed08bcaff4987a236174c94a2d6fd89950db1bc34ca207"
+      - packageId: "0f766bec38fe370b7dc4ae41c28c24a8f85e3fce087c496146f414772924a172"
         moduleName: "Iou"
         entityName: "IouTransfer"
 messaging:

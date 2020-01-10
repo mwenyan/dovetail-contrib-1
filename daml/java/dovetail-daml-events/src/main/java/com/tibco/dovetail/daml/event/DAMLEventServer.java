@@ -74,14 +74,14 @@ public class DAMLEventServer {
 	
 	
 	private static void subscribeTransactionEvents(DamlLedgerClient client, AppConfig config) throws Exception {
-        Publisher pub = getPublisher(config, config.getAppId() + "_transaction");
-		//Publisher pub = getPublisher(config, null);
+      //  Publisher pub = getPublisher(config, config.getAppId() + "_transaction");
+		 Publisher pub = getPublisher(config, null);
 		 Gson gson = new Gson();
 		
 		 client.getTransactionsClient().getTransactions(getCheckpoint(), getTxnFilter(config), true)
 		 .subscribeOn(Schedulers.io())
 		 .subscribe( txn -> {
-			 pub.beginTransaction();
+			// pub.beginTransaction();
 			 try {
 				 Map<String, String> headers = new HashMap<String, String>();
 				 headers.put("APPID", config.getAppId());
@@ -102,10 +102,10 @@ public class DAMLEventServer {
 	                 }
 				 }
 			 }catch(Exception e) {
-				 pub.abortTransaction();
+			//	 pub.abortTransaction();
 				 throw e;
 			 }
-			pub.commitTransaction();
+			//pub.commitTransaction();
 		 });
 		 
 		 System.out.println("Subscribed to transactions stream");
@@ -113,14 +113,14 @@ public class DAMLEventServer {
 	}
 	
 	private static void subscribeCommandEvents(DamlLedgerClient client, AppConfig config) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Publisher pub = getPublisher(config, config.getAppId() + "_command");
-		//Publisher pub = getPublisher(config, null);
+		//Publisher pub = getPublisher(config, config.getAppId() + "_command");
+		 Publisher pub = getPublisher(config, null);
 		 Gson gson = new Gson();
 		
 		 client.getCommandCompletionClient().completionStream(config.getAppId(), getCheckpoint(), getCommandFilter(config))
 		 .subscribeOn(Schedulers.io())
 		 .subscribe( cmd -> {
-			 pub.beginTransaction();
+			// pub.beginTransaction();
 			 if(cmd.getCompletions().size() > 0) {
 				 cmd.getCompletions().forEach(c -> {
 					 Map<String, String> headers = new HashMap<String, String>();
@@ -133,13 +133,13 @@ public class DAMLEventServer {
 				 });
 			 }
 			
-			 pub.commitTransaction();
+			// pub.commitTransaction();
 		 });
 		 System.out.println("Subscribed to command completion stream");
 	}
 	
 	private static LedgerOffset getCheckpoint() {
-		return LedgerOffset.LedgerBegin.getInstance();
+		return LedgerOffset.LedgerEnd.getInstance();
 	}
 	
 	private static FiltersByParty getTxnFilter(AppConfig config) {

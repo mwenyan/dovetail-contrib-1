@@ -96,5 +96,4 @@ libraries/corda-java/target/
 blockchain/corda/target/
 smartcontract-java/target
 blockchain/corda/logs
-*.zip
 
