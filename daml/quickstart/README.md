@@ -10,7 +10,9 @@ You must have DAML SDK, java 1.8 and above, Tibco Enterprise Flogo 2.8, and dock
 ## Setup Quickstart daml project
 - **create** a folder "tutorial"
 - **create** a subfolder "artifacts"
+  - **download** all files from the [artifacts](artifacts/) folder to your artifacts folder
 - change to tutorial folder
+  *  runn all commands from this folder
 - **download quickstart daml project**
 ```
 daml new quickstart quickstart-java
@@ -20,6 +22,8 @@ daml new quickstart quickstart-java
 cd quickstart
 
 daml build
+
+cd ..
 ```
 
 if it prompts for upgrade to latest version of daml SDK, follow the instructions, then run "daml build" again.
@@ -41,10 +45,6 @@ daml json-api --ledger-host  localhost --ledger-port 6865 --http-port 7575
 ## Develop integration application
 
 ### Configure connections
-
-- **download** artifacts.zip from the [artifacts](artifacts/) folder and unzip contents to your artifacts folder
-
-  we assume you are running all commands from the parent folder "tutorial"
 
 - **extracts** metadata from dar file
 ```
